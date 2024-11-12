@@ -1,0 +1,35 @@
+# Define the Docker image for Node.js
+image: node:16
+
+# Define the stages of the pipeline
+stages:
+  - install
+  - build
+  - test
+
+# Install Dependencies Stage
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 day
+
+# Build Stage
+build_project:
+  stage: build
+  script:
+    - npm run build -- --prod
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+# Test Stage
+run_tests:
+  stage: test
+  script:
+    - npm test -- --watch=false
+
